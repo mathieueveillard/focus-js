@@ -17,11 +17,21 @@
     {
       "plugin": "@nx/js/typescript",
       "options": {
-        "typecheck": { "targetName": "typecheck" },
-        "build": { "targetName": "build", "configName": "tsconfig.lib.json" }
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "build",
+          "configName": "tsconfig.lib.json"
+        }
       }
     },
-    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
     {
       "plugin": "@nx/webpack/plugin",
       "options": {
@@ -30,7 +40,12 @@
         "previewTargetName": "preview"
       }
     },
-    { "plugin": "@nx/playwright/plugin", "options": { "targetName": "e2e" } },
+    {
+      "plugin": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "e2e"
+      }
+    },
     {
       "plugin": "@nx/rsbuild",
       "options": {
@@ -43,10 +58,19 @@
     }
   ],
   "targetDefaults": {
-    "@nx/vite:test": { "cache": true, "inputs": ["default", "^production"] },
-    "e2e-ci--**/*": { "dependsOn": ["^build"] }
+    "@nx/vite:test": {
+      "cache": true,
+      "inputs": ["default", "^production"]
+    },
+    "e2e-ci--**/*": {
+      "dependsOn": ["^build"]
+    }
   },
-  "release": { "version": { "preVersionCommand": "npx nx run-many -t build" } },
+  "release": {
+    "version": {
+      "preVersionCommand": "npx nx run-many -t build"
+    }
+  },
   "generators": {
     "@nx/react": {
       "application": {
@@ -55,8 +79,13 @@
         "linter": "eslint",
         "bundler": "webpack"
       },
-      "component": { "style": "css" },
-      "library": { "style": "css", "linter": "eslint" }
+      "component": {
+        "style": "css"
+      },
+      "library": {
+        "style": "css",
+        "linter": "eslint"
+      }
     }
   }
 }
