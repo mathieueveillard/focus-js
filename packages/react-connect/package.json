@@ -1,0 +1,33 @@
+{
+  "name": "@focus/react-connect",
+  "version": "0.0.1",
+  "dependencies": {
+    "react": "^19.0.0",
+    "tslib": "^2.3.0",
+    "@focus/core": "0.0.1",
+    "@focus/store": "0.0.1"
+  },
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "sourceRoot": "packages/react-connect/src",
+    "projectType": "library",
+    "name": "react-connect",
+    "targets": {
+      "test": {
+        "executor": "@nx/vite:test",
+        "outputs": [
+          "{options.reportsDirectory}"
+        ],
+        "options": {
+          "reportsDirectory": "../../coverage/packages/react-connect"
+        }
+      }
+    }
+  }
+}

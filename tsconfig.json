@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/core"
+    },
+    {
+      "path": "./packages/store"
+    },
+    {
+      "path": "./packages/react-connect"
+    },
+    {
+      "path": "./packages/demo"
+    }
+  ]
+}
