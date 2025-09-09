@@ -3,12 +3,6 @@
   "include": [],
   "references": [
     {
-      "path": "../store"
-    },
-    {
-      "path": "../core"
-    },
-    {
       "path": "../react-connect"
     },
     {
