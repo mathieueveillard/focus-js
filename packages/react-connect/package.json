@@ -4,7 +4,7 @@
   "dependencies": {
     "react": "^19.0.0",
     "tslib": "^2.3.0",
-    "@focus-js/core": "0.0.1",
+    "@focus-js/core": "1.0.0",
     "@focus-js/store": "0.0.1"
   },
   "type": "commonjs",

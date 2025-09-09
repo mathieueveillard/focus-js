@@ -352,3 +352,5 @@ The Focus ecosystem is split into 3 packages, each with a distinct responsibilit
 - `@focus-js/react-connect` – Provides a React connector for the store, via hooks. Other view-library connectors are planned for the future.
 
 This modular approach allows you to pick only the pieces you need: use lenses alone, combine them with the store, or integrate seamlessly with React.
+
+https://www.npmjs.com/settings/focus-js/packages
