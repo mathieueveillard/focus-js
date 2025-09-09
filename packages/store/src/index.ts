@@ -1,2 +1,2 @@
 export * from './lib';
-export * from '@focus/core';
+export * from '@focus-js/core';

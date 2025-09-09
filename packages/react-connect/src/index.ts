@@ -1,2 +1,2 @@
 export * from './lib';
-export * from '@focus/store';
+export * from '@focus-js/store';

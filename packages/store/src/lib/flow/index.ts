@@ -1,4 +1,4 @@
-import { Reducer } from '@focus/core';
+import { Reducer } from '@focus-js/core';
 
 export const flow =
   <State>(...fns: Reducer<State>[]): Reducer<State> =>

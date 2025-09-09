@@ -1,4 +1,4 @@
-import { createLens } from '@focus/core';
+import { createLens } from '@focus-js/core';
 import { createStore } from '.';
 
 describe('Test of createStore', () => {

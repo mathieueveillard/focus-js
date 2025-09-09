@@ -21,20 +21,20 @@ A lens-based state manager. Library/Framework agnostic. Connector for React.
 ## Installation
 
 ```
-npm i -S @focus/react-connect
+npm i -S @focus-js/react-connect
 ```
 
 or
 
 ```
-yarn add @focus/react-connect
+yarn add @focus-js/react-connect
 ```
 
 ## Getting started (React)
 
 ```typescript
 import React from 'react';
-import { connect, createLens } from '@focus/react-connect';
+import { connect, createLens } from '@focus-js/react-connect';
 
 type ApplicationState = {
   a: number;
@@ -347,8 +347,8 @@ From there, you immediately get:
 
 The Focus ecosystem is split into 3 packages, each with a distinct responsibility:
 
-- `@focus/core` – Implements the core lens abstractions. This is the heart of Focus: generic, composable lenses and reducer lifting. It is framework-agnostic and can be used in any TypeScript or JavaScript project.
-- `@focus/store` – Implements the state store itself. It handles storing the application state, applying reducers, and notifying subscribers. It does not depend on any view library, making it usable in Node, React, or other environments.
-- `@focus/react-connect` – Provides a React connector for the store, via hooks. Other view-library connectors are planned for the future.
+- `@focus-js/core` – Implements the core lens abstractions. This is the heart of Focus: generic, composable lenses and reducer lifting. It is framework-agnostic and can be used in any TypeScript or JavaScript project.
+- `@focus-js/store` – Implements the state store itself. It handles storing the application state, applying reducers, and notifying subscribers. It does not depend on any view library, making it usable in Node, React, or other environments.
+- `@focus-js/react-connect` – Provides a React connector for the store, via hooks. Other view-library connectors are planned for the future.
 
 This modular approach allows you to pick only the pieces you need: use lenses alone, combine them with the store, or integrate seamlessly with React.

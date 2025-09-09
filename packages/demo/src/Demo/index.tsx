@@ -6,7 +6,7 @@ import H1 from './utils/H1';
 
 const Component: React.FunctionComponent = () => (
   <div className="m-10">
-    <H1>@focus/react-connect</H1>
+    <H1>@focus-js/react-connect</H1>
     <div className="grid grid-rows-2 grid-flow-col gap-6">
       <GlobalState />
       <A />

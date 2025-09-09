@@ -1,4 +1,4 @@
-import { Lens, Reducer } from '@focus/core';
+import { Lens, Reducer } from '@focus-js/core';
 import { flow } from './flow';
 import { createCollection } from './Collection';
 

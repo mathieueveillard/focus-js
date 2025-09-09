@@ -32,7 +32,7 @@
     "verbatimModuleSyntax": false,
     "baseUrl": ".",
     "paths": {
-      "@focus/react-connect": ["packages/react-connect/src/index.ts"]
+      "@focus-js/react-connect": ["packages/react-connect/src/index.ts"]
     }
   }
 }

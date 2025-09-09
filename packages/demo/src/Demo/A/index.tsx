@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Code from '../utils/Code';
 import Button from '../utils/Button';
 import H2 from '../utils/H2';
-import { createLens } from '@focus/react-connect';
+import { createLens } from '@focus-js/react-connect';
 import { ApplicationState, useFocusedState } from '../../main';
 
 const lens = createLens<ApplicationState, number>({

@@ -1,8 +1,8 @@
 // https://react.dev/reference/react/useSyncExternalStore
 
 import { useSyncExternalStore } from 'react';
-import { createLens, Lens } from '@focus/core';
-import { createStore, Logger } from '@focus/store';
+import { createLens, Lens } from '@focus-js/core';
+import { createStore, Logger } from '@focus-js/store';
 
 const noop = () => {
   // noop
