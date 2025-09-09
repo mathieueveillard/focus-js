@@ -1,4 +1,4 @@
-# focus
+# @focus-js/react-connect
 
 A lens-based state manager. Library/Framework agnostic. Connector for React.
 
