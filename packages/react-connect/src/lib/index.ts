@@ -1,8 +1,12 @@
 // https://react.dev/reference/react/useSyncExternalStore
 
 import { useSyncExternalStore } from 'react';
-import { createLens, Lens, noop } from '@focus/core';
+import { createLens, Lens } from '@focus/core';
 import { createStore, Logger } from '@focus/store';
+
+const noop = () => {
+  // noop
+};
 
 export const connect = <State>(initialState: State, logger: Logger = noop) => {
   const store = createStore(initialState, logger);

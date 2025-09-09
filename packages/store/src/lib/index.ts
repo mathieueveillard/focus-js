@@ -1,4 +1,6 @@
-import { createCollection, flow, Lens, noop, Reducer } from '@focus/core';
+import { Lens, Reducer } from '@focus/core';
+import { flow } from './flow';
+import { createCollection } from './Collection';
 
 export type Subscriber = () => void;
 
@@ -18,6 +20,10 @@ export type Store<State> = FocusedStore<State> & {
 };
 
 export type Logger = (log: object) => void;
+
+const noop = () => {
+  // noop
+};
 
 export const createStore = <State>(
   initialState: State,
