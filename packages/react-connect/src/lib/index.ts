@@ -1,24 +1,11 @@
 // https://react.dev/reference/react/useSyncExternalStore
 
 import { useSyncExternalStore } from 'react';
-import { Lens, noop } from '@focus/core';
+import { createLens, Lens, noop } from '@focus/core';
 import { createStore, Logger } from '@focus/store';
 
 export const connect = <State>(initialState: State, logger: Logger = noop) => {
   const store = createStore(initialState, logger);
-
-  const useGlobalState = () => {
-    const { subscribe, getState, select, updateState } = store;
-
-    const state = useSyncExternalStore(subscribe, getState);
-
-    return {
-      state,
-      getSynchronousState: getState,
-      select,
-      updateState,
-    };
-  };
 
   const useFocusedState = <Focus = State>(lens: Lens<State, Focus>) => {
     const focusedStore = store.focus(lens);
@@ -34,6 +21,13 @@ export const connect = <State>(initialState: State, logger: Logger = noop) => {
       updateState,
     };
   };
+
+  const NOOP_LENS = createLens<State, State>({
+    get: (state) => state,
+    set: (_, state) => state,
+  });
+
+  const useGlobalState = () => useFocusedState(NOOP_LENS);
 
   return { useGlobalState, useFocusedState };
 };
