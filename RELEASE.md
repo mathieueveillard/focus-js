@@ -4,7 +4,7 @@
 
 ```
 cd packages/core/dist
-npm version <patch|minor|major>
+npm version [<newversion> | major | minor | patch | premajor | preminor | prepatch | prerelease | from-git]
 npx nx run core:build
 npm publish --access public
 ```
@@ -18,7 +18,7 @@ Then:
 
 ```
 cd packages/store/dist
-npm version <patch|minor|major>
+npm version [<newversion> | major | minor | patch | premajor | preminor | prepatch | prerelease | from-git]
 npx nx run store:build
 npm publish --access public
 ```
@@ -32,7 +32,7 @@ Then:
 
 ```
 cd packages/react-connect/dist
-npm version <patch|minor|major>
+npm version [<newversion> | major | minor | patch | premajor | preminor | prepatch | prerelease | from-git]
 npx nx run react-connect:build
 npm publish --access public
 ```

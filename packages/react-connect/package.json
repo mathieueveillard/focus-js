@@ -1,11 +1,11 @@
 {
   "name": "@focus-js/react-connect",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "react": "^19.0.0",
     "tslib": "^2.3.0",
-    "@focus-js/core": "1.0.0",
-    "@focus-js/store": "1.0.0"
+    "@focus-js/core": "1.0.1",
+    "@focus-js/store": "1.0.1"
   },
   "type": "commonjs",
   "main": "./dist/index.js",
