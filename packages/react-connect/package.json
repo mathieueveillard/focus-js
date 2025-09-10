@@ -1,6 +1,24 @@
 {
   "name": "@focus-js/react-connect",
   "version": "1.0.1",
+  "keywords": [
+    "connect",
+    "immutability",
+    "immutable",
+    "focus",
+    "focus-js",
+    "fp",
+    "functional",
+    "hooks",
+    "lens",
+    "management",
+    "react",
+    "reducer",
+    "redux",
+    "state",
+    "store",
+    "zustand"
+  ],
   "dependencies": {
     "react": "^19.0.0",
     "tslib": "^2.3.0",

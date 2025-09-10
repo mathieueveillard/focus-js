@@ -1,6 +1,17 @@
 {
   "name": "@focus-js/core",
   "version": "1.0.1",
+  "keywords": [
+    "immutability",
+    "immutable",
+    "focus",
+    "focus-js",
+    "fp",
+    "functional",
+    "lens",
+    "reducer",
+    "state"
+  ],
   "dependencies": {
     "tslib": "^2.3.0"
   },
