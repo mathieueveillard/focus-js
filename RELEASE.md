@@ -47,3 +47,8 @@ Then:
 ```
 npm pack --dry-run
 ```
+
+## Semantic versioning
+
+- https://docs.npmjs.com/about-semantic-versioning
+- https://semver.org/
