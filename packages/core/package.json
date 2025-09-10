@@ -8,6 +8,9 @@
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "private": false,
+  "files": [
+    "dist"
+  ],
   "nx": {
     "sourceRoot": "packages/core/src",
     "projectType": "library",

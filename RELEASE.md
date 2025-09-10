@@ -41,3 +41,9 @@ Then:
 
 - update dependant packages (none)
 - commit (`chore(release): @focus-js/react-connect v<version>`)
+
+## Dry run
+
+```
+npm pack --dry-run
+```
