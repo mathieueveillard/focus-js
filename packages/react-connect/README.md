@@ -17,6 +17,9 @@ A lens-based state manager. Library/Framework agnostic. Connector for React.
   - [Composition with reducers](#composition-with-reducers)
   - [`createLens` for handling reduction logic](#createlens-for-handling-reduction-logic)
 - [Focus Packages Overview](#focus-packages-overview)
+- [Best Practices](#best-practices)
+  - [Structuring the State Object](#structuring-the-state-object)
+  - [When Normalization Is Still Needed](#when-normalization-is-still-needed)
 
 ## Installation
 
@@ -354,3 +357,72 @@ The Focus ecosystem is split into 3 packages, each with a distinct responsibilit
 This modular approach allows you to pick only the pieces you need: use lenses alone, combine them with the store, or integrate seamlessly with React.
 
 https://www.npmjs.com/settings/focus-js/packages
+
+## Best Practices
+
+Using @focus-js/react-connect follows the same best practices as Redux or any other global state management library. Keep in mind the following guidelines to get the most out of it:
+
+1. **Use Focus only when you really need it**
+   Global state management adds complexity. Reach for Focus only if your use case cannot be solved with simpler local state.
+
+2. **Keep local state local**
+   Not every piece of state needs to live in Focus. UI-related or short-lived state (e.g., form inputs, modals) should remain in component state.
+
+3. **Connect at the lowest possible level**
+   Avoid connecting high-level container components unless necessary. Instead, connect components closer to where the data is actually used—this prevents props drilling and ensures better encapsulation.
+
+4. **Enforce clear architectural boundaries**
+   Focus encourages you to separate persistence, business (domain) logic, and application logic. Go further by structuring your project around a clean architecture (e.g., hexagonal architecture) to keep concerns well-isolated and maintainable.
+
+### Structuring the State Object
+
+One major difference between Redux and Focus is **how you structure the state**.
+
+In Redux, the common best practice is to organize your state into **slices**, similar to tables in a relational database. This avoids deep nesting and makes it easier to update entities independently. For example, with an `Invoice` that contains multiple `LineItems` (a typical 1-N relationship):
+
+```js
+// Redux: normalized slices
+{
+  invoices: {
+    byId: {
+      "invoice-1": { id: "invoice-1", customer: "ACME Corp", lineItems: ["line-item-1", "line-item-2"] }
+    },
+    allIds: ["invoice-1"]
+  },
+  lineItems: {
+    byId: {
+      "line-item-1": { id: "line-item-1", invoiceId: "invoice-1", product: "Laptop", quantity: 1 },
+      "line-item-2": { id: "line-item-2", invoiceId: "invoice-1", product: "Mouse", quantity: 2 }
+    },
+    allIds: ["line-item-1", "line-item-2"]
+  }
+}
+```
+
+With Focus, you can afford to keep a **more nested state**. Since Focus provides fine-grained subscriptions and efficient updates, a tree-like structure is often easier to work with and closer to your domain and mental model:
+
+```js
+// Focus: nested state
+{
+  invoices: {
+    "invoice-1": {
+      id: "invoice-1",
+      customer: "ACME Corp",
+      lineItems: [
+        { id: "line-item-1", product: "Laptop", quantity: 1 },
+        { id: "line-item-2", product: "Mouse", quantity: 2 }
+      ]
+    }
+  }
+}
+```
+
+This means you don’t always need to flatten your entities into slices. A nested structure can be simpler, more expressive, and reduce boilerplate—especially when entities are naturally contained within each other.
+
+### When Normalization Is Still Needed
+
+That said, there are cases where normalization is still the right approach:
+
+- **1-N relationships with high volume**: For example, `Discussion` → `Messages`. A discussion might contain thousands of messages. In such cases, a normalized state makes it easier to load, paginate, and update messages efficiently.
+
+- **N-N relationships**: When entities are not strictly composed but can be linked in multiple ways, normalization avoids duplication and inconsistencies. For example, `Students` and `Courses` (a student can enroll in many courses, and a course has many students). Storing them in slices ensures updates remain consistent across relationships.
