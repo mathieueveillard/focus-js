@@ -1,3 +1,5 @@
+# @focus-js/react-connect
+
 A lens-based state manager. Library/Framework agnostic. Connector for React.
 
 ## Table of Contents
@@ -49,22 +51,18 @@ const { useFocusedState } = connect<ApplicationState>({
   b: 0,
 });
 
-const lens = createLens<ApplicationState, number>({
+const a_lens = createLens<ApplicationState, number>({
   get: ({ a }) => a,
   set: (state, a) => ({ ...state, a }),
 });
 
 const CounterA: React.FunctionComponent = () => {
-  const { state, updateState } = useFocusedState(lens);
-
-  const increment = (): void => {
-    updateState((n) => n + 1);
-  };
+  const [counter, increment] = useFocusedState(a_lens);
 
   return (
     <div>
-      <div>{state}</div>
-      <button onClick={increment}>Increment</button>
+      <div>{counter}</div>
+      <button onClick={() => increment((n) => n + 1)}>Increment</button>
     </div>
   );
 };
@@ -589,9 +587,7 @@ With this setup:
 Once your lenses are defined in this centralized way, you can use them anywhere in your application to both read and update state with minimal boilerplate. For example, accessing and updating the rank of project `"project-3"` is as simple as:
 
 ```typescript
-const { state: rank, updateState: updateRank } = useFocusedState(
-  L.rank('project-3')
-);
+const [rank, updateRank] = useFocusedState(L.rank('project-3'));
 ```
 
 Here, `rank` contains the current value (`number`) and `updateRank` lets you apply reducers directly to that piece of state. For instance, incrementing the rank becomes trivial:

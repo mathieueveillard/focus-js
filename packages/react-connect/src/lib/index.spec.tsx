@@ -12,10 +12,10 @@ describe('Without focusing', () => {
 
   test('It should allow to read the state', async () => {
     // Given
-    const { useGlobalState: useState } = connect<State>(0);
+    const { useGlobalState } = connect<State>(0);
 
     const Component: React.FunctionComponent = () => {
-      const { state, updateState } = useState();
+      const [state, updateState] = useGlobalState();
 
       const onClick = (): void => {
         updateState((state) => state + 1);
@@ -40,10 +40,10 @@ describe('Without focusing', () => {
 
   test('It should allow to update the state', async () => {
     // Given
-    const { useGlobalState: useState } = connect<State>(0);
+    const { useGlobalState } = connect<State>(0);
 
     const Component: React.FunctionComponent = () => {
-      const { state, updateState } = useState();
+      const [state, updateState] = useGlobalState();
 
       const onClick = (): void => {
         updateState((state) => state + 1);
@@ -82,13 +82,13 @@ describe('With focusing', () => {
 
   test('It should allow to read the state', async () => {
     // Given
-    const { useFocusedState: useState } = connect<State>({
+    const { useFocusedState } = connect<State>({
       value: 0,
       other: 'other',
     });
 
     const Component: React.FunctionComponent = () => {
-      const { state, updateState } = useState(lens);
+      const [state, updateState] = useFocusedState(lens);
 
       const onClick = (): void => {
         updateState((state) => state + 1);
@@ -113,13 +113,13 @@ describe('With focusing', () => {
 
   test('It should allow to update the state', async () => {
     // Given
-    const { useFocusedState: useState } = connect<State>({
+    const { useFocusedState } = connect<State>({
       value: 0,
       other: 'other',
     });
 
     const Component: React.FunctionComponent = () => {
-      const { state, updateState } = useState(lens);
+      const [state, updateState] = useFocusedState(lens);
 
       const onClick = (): void => {
         updateState((state) => state + 1);
@@ -163,10 +163,10 @@ describe('Change detection', () => {
 
   test('A should update without B to render', async () => {
     // Given
-    const { useFocusedState: useState } = connect<State>({ a: 0, b: 0 });
+    const { useFocusedState } = connect<State>({ a: 0, b: 0 });
 
     const A: React.FunctionComponent = () => {
-      const { state, updateState } = useState(aLens);
+      const [state, updateState] = useFocusedState(aLens);
 
       const onClick = (): void => {
         updateState((state) => state + 1);
@@ -185,7 +185,7 @@ describe('Change detection', () => {
     const bSpy = vi.fn();
 
     const B: React.FunctionComponent = () => {
-      const { state } = useState(bLens);
+      const [state] = useFocusedState(bLens);
 
       React.useEffect(() => {
         bSpy();

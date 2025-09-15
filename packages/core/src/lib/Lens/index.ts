@@ -40,5 +40,3 @@ export const createLens = <Outer, Inner>({
     reduce,
   };
 };
-
-export * from './common';

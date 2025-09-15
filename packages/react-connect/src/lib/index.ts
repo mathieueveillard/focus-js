@@ -14,16 +14,16 @@ export const connect = <State>(initialState: State, logger: Logger = noop) => {
   const useFocusedState = <Focus = State>(lens: Lens<State, Focus>) => {
     const focusedStore = store.focus(lens);
 
-    const { subscribe, getState, select, updateState } = focusedStore;
+    const { getState, updateState, select, subscribe } = focusedStore;
 
     const state = useSyncExternalStore(subscribe, getState);
 
-    return {
-      state,
-      getSynchronousState: getState,
-      select,
+    return [
+      state, // reactive state
       updateState,
-    };
+      select,
+      getState, // synchronous state
+    ] as const;
   };
 
   const NOOP_LENS = createLens<State, State>({
