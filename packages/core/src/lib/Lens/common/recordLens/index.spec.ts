@@ -1,5 +1,4 @@
 import recordLens from '.';
-import attributeLens from '../attributeLens';
 
 describe('Test of recordLens()', () => {
   describe("Case: the element doesn't exist", () => {
@@ -16,30 +15,22 @@ describe('Test of recordLens()', () => {
         '7aa9abab-80b6-4f87-bba3-b9e831f1e986': 'This is OK!',
       });
     });
+  });
 
-    describe('Composition with another lens (upstream)', () => {
-      type Upstream = {
-        upstream: Record<string, string>;
-      };
+  describe('Case: the element already exists', () => {
+    const record: Record<string, string> = {
+      '7aa9abab-80b6-4f87-bba3-b9e831f1e986': 'Hello, World!',
+    };
 
-      const upstreamLens = attributeLens<Upstream, 'upstream'>('upstream');
+    const lens = recordLens<string>('7aa9abab-80b6-4f87-bba3-b9e831f1e986');
 
-      const strongerLens = upstreamLens.focus(lens);
+    test('Get', () => {
+      expect(lens.get(record)).toEqual('Hello, World!');
+    });
 
-      const upstream: Upstream = {
-        upstream: record,
-      };
-
-      test('Get', () => {
-        expect(strongerLens.get(upstream)).toEqual(undefined);
-      });
-
-      test('Set', () => {
-        expect(strongerLens.set(upstream, 'This is OK!')).toEqual({
-          upstream: {
-            '7aa9abab-80b6-4f87-bba3-b9e831f1e986': 'This is OK!',
-          },
-        });
+    test('Set', () => {
+      expect(lens.set(record, '42')).toEqual({
+        '7aa9abab-80b6-4f87-bba3-b9e831f1e986': '42',
       });
     });
   });

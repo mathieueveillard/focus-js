@@ -4,6 +4,6 @@ type HasId = {
   id: string;
 };
 
-const lens = attributeLens<HasId, 'id'>('id');
+const idLens = attributeLens<HasId, 'id'>('id');
 
-export default lens;
+export default idLens;

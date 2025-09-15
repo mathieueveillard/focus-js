@@ -1,9 +1,9 @@
 import { createLens } from '../..';
 
-const lens = <T, K extends keyof T>(attribute: K) =>
-  createLens<T, T[K]>({
-    get: (t) => t[attribute],
-    set: (t, value) => ({ ...t, [attribute]: value }),
+const attributeLens = <State, Key extends keyof State>(key: Key) =>
+  createLens<State, State[Key]>({
+    get: (state) => state[key],
+    set: (state, value) => ({ ...state, [key]: value }),
   });
 
-export default lens;
+export default attributeLens;

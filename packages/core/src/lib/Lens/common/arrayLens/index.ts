@@ -1,6 +1,6 @@
 import { createLens } from '../..';
 
-const lens = <T>(index: number) =>
+const arrayLens = <T>(index: number) =>
   createLens<T[], T>({
     get: (state) => state[index],
     set: (state, t) => {
@@ -10,4 +10,4 @@ const lens = <T>(index: number) =>
     },
   });
 
-export default lens;
+export default arrayLens;

@@ -1,6 +1,6 @@
 import { createLens } from "../..";
 
-const lens = <T>(id: string) =>
+const recordLens = <T>(id: string) =>
   createLens<Record<string, T>, T>({
     get: (state) => state[id],
     set: (state, t) => ({
@@ -9,4 +9,4 @@ const lens = <T>(id: string) =>
     }),
   });
 
-export default lens;
+export default recordLens;
