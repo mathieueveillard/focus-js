@@ -16,10 +16,12 @@ A lens-based state manager. Library/Framework agnostic. Connector for React.
   - [Definition and example](#definition-and-example)
   - [Composition with reducers](#composition-with-reducers)
   - [`createLens` for handling reduction logic](#createlens-for-handling-reduction-logic)
-- [Focus Packages Overview](#focus-packages-overview)
-- [Best Practices](#best-practices)
-  - [Structuring the State Object](#structuring-the-state-object)
-  - [When Normalization Is Still Needed](#when-normalization-is-still-needed)
+  - [Utility lenses provided by @focus/core](#utility-lenses-provided-by-focuscore)
+- [Packages overview](#packages-overview)
+- [Best practices](#best-practices)
+  - [Common state management knowledge](#common-state-management-knowledge)
+  - [Structuring the state object](#structuring-the-state-object)
+  - [Organizing your own lenses](#organizing-your-own-lenses)
 
 ## Installation
 
@@ -346,7 +348,103 @@ From there, you immediately get:
 - `lens.reduce` to lift reducers automatically,
 - and other things…
 
-## Focus Packages Overview
+### Utility lenses provided by @focus/core
+
+To make lens creation easier, `@focus/core` provides a few ready-made lenses that cover common scenarios. Each can be used directly in your reducers, or as a building block for composing more advanced ones.
+
+#### `attributeLens`
+
+Focuses on a single attribute of an object.
+Useful for updating a property without manually spreading the rest of the object:
+
+```typescript
+// @focus-js/core
+const attributeLens = <State, Key extends keyof State>(key: Key) =>
+  createLens<State, State[Key]>({
+    get: (state) => state[key],
+    set: (state, value) => ({ ...state, [key]: value }),
+  });
+
+// Example
+type User = {
+  name: string;
+  age: number; // for example only (usually not a best practice)
+};
+
+const user = { name: 'Alice', age: 30 };
+
+const ageLens = attributeLens<typeof user, 'age'>('age');
+
+ageLens.get(user); // 30
+ageLens.set(user, 31); // { name: "Alice", age: 31 }
+```
+
+#### `arrayLens`
+
+Focuses on an element at a specific index in an array.
+This lets you immutably update a list item without re-implementing the index logic yourself:
+
+```typescript
+// @focus-js/core
+const arrayLens = <T>(index: number) =>
+  createLens<T[], T>({
+    get: (state) => state[index],
+    set: (state, t) => {
+      const nextState = [...state];
+      nextState[index] = t;
+      return nextState;
+    },
+  });
+
+// Example
+const numbers = [1, 2, 3];
+
+const secondLens = arrayLens<number>(1);
+
+secondLens.get(numbers); // 2
+secondLens.set(numbers, 42); // [1, 42, 3]
+```
+
+#### `recordLens`
+
+Focuses on a value in a key-value dictionary (`Record<string, T>`).
+Handy for managing states organized as maps:
+
+```typescript
+// @focus-js/core
+const recordLens = <T>(id: string) =>
+  createLens<Record<string, T>, T>({
+    get: (state) => state[id],
+    set: (state, t) => ({
+      ...state,
+      [id]: t,
+    }),
+  });
+
+// Example
+type Project = {
+  id: string;
+  name: string;
+};
+
+const projects: Record<string, Project> = {
+  'project-1': { id: 'project-1', name: 'Website' },
+  'project-2': { id: 'project-2', name: 'Mobile App' },
+};
+
+const newProjectLens = recordLens<Project>('project-3');
+
+const updatedProjects = newProjectLens.set(projects, {
+  id: 'project-3',
+  name: 'Legacy refactoring',
+});
+
+newProjectLens.get(updatedProjects); // { id: "project-3", name: "Legacy refactoring" }
+```
+
+By combining these utility lenses, you can quickly drill down into complex state structures. For instance, you could compose an `arrayLens` with an `attributeLens` to directly update a single field of an object stored inside a list — without writing any manual spread operations.
+
+## Packages overview
 
 The Focus ecosystem is split into 3 packages, each with a distinct responsibility:
 
@@ -358,7 +456,9 @@ This modular approach allows you to pick only the pieces you need: use lenses al
 
 https://www.npmjs.com/settings/focus-js/packages
 
-## Best Practices
+## Best practices
+
+### Common state management knowledge
 
 Using @focus-js/react-connect follows the same best practices as Redux or any other global state management library. Keep in mind the following guidelines to get the most out of it:
 
@@ -374,7 +474,7 @@ Using @focus-js/react-connect follows the same best practices as Redux or any ot
 4. **Enforce clear architectural boundaries**
    Focus encourages you to separate persistence, business (domain) logic, and application logic. Go further by structuring your project around a clean architecture (e.g., hexagonal architecture) to keep concerns well-isolated and maintainable.
 
-### Structuring the State Object
+### Structuring the state object
 
 One major difference between Redux and Focus is **how you structure the state**.
 
@@ -419,10 +519,85 @@ With Focus, you can afford to keep a **more nested state**. Since Focus provides
 
 This means you don’t always need to flatten your entities into slices. A nested structure can be simpler, more expressive, and reduce boilerplate—especially when entities are naturally contained within each other.
 
-### When Normalization Is Still Needed
-
 That said, there are cases where normalization is still the right approach:
 
 - **1-N relationships with high volume**: For example, `Discussion` → `Messages`. A discussion might contain thousands of messages. In such cases, a normalized state makes it easier to load, paginate, and update messages efficiently.
 
 - **N-N relationships**: When entities are not strictly composed but can be linked in multiple ways, normalization avoids duplication and inconsistencies. For example, `Students` and `Courses` (a student can enroll in many courses, and a course has many students). Storing them in slices ensures updates remain consistent across relationships.
+
+### Organizing your own lenses
+
+While `@focus/core` provides utility lenses such as `attributeLens`, `arrayLens`, and `recordLens`, the real power of Focus comes when you define lenses that are specific to your domain model. By composing small, generic lenses into larger, domain-oriented ones, you keep your codebase expressive, readable, and easy to maintain.
+
+The recommended practice is to **centralize your domain lenses in one place** (e.g., a `L` object) so that the rest of your application can rely on them without duplicating `get`/`set` logic. This way, your components and reducers can work at the right level of abstraction, without worrying about deeply nested state paths.
+
+For example, let’s imagine a simple application state that manages projects and a selection index. By composing lenses, we can easily express concepts like “focus on one project,” or “focus on the rank of a given project”:
+
+```typescript
+import {
+  createLens,
+  connect,
+  attributeLens,
+  recordLens,
+} from '@focus-js/react-connect';
+
+// A domain model
+type Project = {
+  id: string;
+  name: string;
+  meta: {
+    rank: number;
+  };
+};
+
+// state.ts
+export type AllProjects = Record<string, Project>;
+
+export type ApplicationState = {
+  projects: AllProjects;
+  selection: number;
+};
+
+export const { useGlobalState, useFocusedState } = connect<ApplicationState>({
+  projects: {},
+  selection: 0,
+});
+
+export const L = {
+  // Focus on the "projects" attribute of the application state
+  allProjects: attributeLens<ApplicationState, 'projects'>('projects'),
+
+  // Focus on a specific project by id
+  oneProject: (id: string) => L.allProjects.focus(recordLens<Project>(id)),
+
+  // Focus on the rank field of a given project
+  rank: (id: string) =>
+    L.oneProject(id)
+      .focus(attributeLens<Project, 'meta'>('meta'))
+      .focus(attributeLens('rank')),
+
+  // Focus on the selection attribute of the application state
+  selection: attributeLens<ApplicationState, 'selection'>('selection'),
+};
+```
+
+With this setup:
+
+- `L.allProjects` points to the dictionary of all projects.
+- `L.oneProject(id)` zooms into a specific project by id.
+- `L.rank(id)` drills all the way down to the `rank` field of that project.
+- `L.selection` gives direct access to the current selection index.
+
+Once your lenses are defined in this centralized way, you can use them anywhere in your application to both read and update state with minimal boilerplate. For example, accessing and updating the rank of project `"project-3"` is as simple as:
+
+```typescript
+const { state: rank, updateState: updateRank } = useFocusedState(
+  L.rank('project-3')
+);
+```
+
+Here, `rank` contains the current value (`number`) and `updateRank` lets you apply reducers directly to that piece of state. For instance, incrementing the rank becomes trivial:
+
+```typescript
+updateRank((r) => r + 1);
+```

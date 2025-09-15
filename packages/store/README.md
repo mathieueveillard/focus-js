@@ -1,3 +1,3 @@
 # @focus-js/store
 
-Please refer to https://github.com/mathieueveillard/focus-js.
+This library is a building block for [@focus-js/react-connect](https://www.npmjs.com/package/@focus-js/react-connect).
