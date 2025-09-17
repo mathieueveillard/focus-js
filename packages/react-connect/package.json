@@ -23,7 +23,7 @@
     "react": "^19.0.0",
     "tslib": "^2.3.0",
     "@focus-js/core": "1.1.0",
-    "@focus-js/store": "1.0.1"
+    "@focus-js/store": "1.1.0"
   },
   "type": "commonjs",
   "main": "./dist/index.js",

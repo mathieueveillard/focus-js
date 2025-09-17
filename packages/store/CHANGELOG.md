@@ -8,7 +8,7 @@
 
 ### Changed
 
-- Export common lenses
+- Dependency upgrade: @focus-js/core v1.0.1 -> @focus-js/core v1.1.0
 
 ### Fixed
 
